@@ -59,9 +59,9 @@ const Navbar = () => {
                             ): (
                                 <UserButton>
                                     <UserButton.MenuItems>
-                                        <UserButton.Action labelIcon={<PackageIcon size= {16}/>} 
+                                        <UserButton.Action labelIcon={<Package size= {16}/>} 
                                         label="Pesananku"
-                                        onClick={()=> router.push('/orders  ')} />
+                                        onClick={()=> router.push('/orders')} />
                                     </UserButton.MenuItems>
                                 </UserButton>
                             )
