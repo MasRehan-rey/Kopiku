@@ -1,6 +1,7 @@
 import imageKit from "@/configs/imageKit";
 import { getAuth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
+import prisma from '@/lib/prisma'
 
 //create the store
 export async function POST (request){
@@ -46,7 +47,7 @@ export async function POST (request){
         const buffer = Buffer.from(await image.arrayBuffer());
         const response = await imageKit.upload({
             file: buffer,
-            filename: image.name,
+            fileName: image.name,
             folder: "logos"
         })
 
@@ -61,7 +62,17 @@ export async function POST (request){
 
         const newStore = await prisma.store.create({
             data: {
-                userId,
+                user: {
+                    connectOrCreate: {
+                        where: { id: userId },
+                        create: {
+                            id: userId,
+                            name: userId,
+                            email: email || "",
+                            image: ""
+                        }
+                    }
+                },
                 name,
                 description,
                 username: username.toLowerCase(),

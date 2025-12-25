@@ -2,10 +2,15 @@
 import { dummyAdminDashboardData } from "@/assets/assets"
 import Loading from "@/components/Loading"
 import OrdersAreaChart from "@/components/OrdersAreaChart"
+import { useAuth } from "@clerk/nextjs"
+import axios from "axios"
 import { CircleDollarSignIcon, ShoppingBasketIcon, StoreIcon, TagsIcon } from "lucide-react"
 import { useEffect, useState } from "react"
+import toast from "react-hot-toast"
 
 export default function AdminDashboard() {
+
+    const { getToken } = useAuth()
 
     const currency = process.env.NEXT_PUBLIC_CURRENCY_SYMBOL || '$'
 
@@ -19,14 +24,22 @@ export default function AdminDashboard() {
     })
 
     const dashboardCardsData = [
-        { title: 'Total Products', value: dashboardData.products, icon: ShoppingBasketIcon },
-        { title: 'Total Revenue', value: currency + dashboardData.revenue, icon: CircleDollarSignIcon },
-        { title: 'Total Orders', value: dashboardData.orders, icon: TagsIcon },
-        { title: 'Total Stores', value: dashboardData.stores, icon: StoreIcon },
+        { title: 'Total Produk', value: dashboardData.products, icon: ShoppingBasketIcon },
+        { title: 'Total Pendapatan', value: currency + dashboardData.revenue, icon: CircleDollarSignIcon },
+        { title: 'Total Order', value: dashboardData.orders, icon: TagsIcon },
+        { title: 'Total Cafe', value: dashboardData.stores, icon: StoreIcon },
     ]
 
     const fetchDashboardData = async () => {
-        setDashboardData(dummyAdminDashboardData)
+        try {
+            const token = await getToken()
+            const { data } = await axios.get('api/admin/dashboard', {
+                headers: {Authorization: `Bearer ${token}` }
+            })
+            setDashboardData(data.dashboardData)
+        } catch (error) {
+            toast.error(error?.response?.data?.error || error.message)
+        }
         setLoading(false)
     }
 
