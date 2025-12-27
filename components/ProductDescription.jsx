@@ -13,7 +13,7 @@ const ProductDescription = ({ product }) => {
 
             {/* Tabs */}
             <div className="flex border-b border-slate-200 mb-6 max-w-2xl">
-                {['Description', 'Reviews'].map((tab, index) => (
+                {['Deskripsi', 'Ulasan'].map((tab, index) => (
                     <button className={`${tab === selectedTab ? 'border-b-[1.5px] font-semibold' : 'text-slate-400'} px-3 py-2 font-medium`} key={index} onClick={() => setSelectedTab(tab)}>
                         {tab}
                     </button>
@@ -26,23 +26,35 @@ const ProductDescription = ({ product }) => {
             )}
 
             {/* Reviews */}
-            {selectedTab === "Reviews" && (
+            {selectedTab === "Ulasan" && (
                 <div className="flex flex-col gap-3 mt-14">
-                    {product.rating.map((item,index) => (
-                        <div key={index} className="flex gap-5 mb-10">
-                            <Image src={item.user.image} alt="" className="size-10 rounded-full" width={100} height={100} />
-                            <div>
-                                <div className="flex items-center" >
-                                    {Array(5).fill('').map((_, index) => (
-                                        <StarIcon key={index} size={18} className='text-transparent mt-0.5' fill={item.rating >= index + 1 ? "#00C950" : "#D1D5DB"} />
-                                    ))}
+                    {product.rating && product.rating.length > 0 ? (
+                        product.rating.map((item,index) => (
+                            <div key={index} className="flex gap-5 mb-10">
+                                {item.user.image ? (
+    <Image src={item.user.image} alt={item.user.name} className="size-10 rounded-full" width={100} height={100} />
+) : (
+    <div className="size-10 rounded-full bg-gray-200 flex items-center justify-center">
+        <span className="text-gray-500 text-xs font-medium">
+            {item.user.name ? item.user.name.charAt(0).toUpperCase() : 'U'}
+        </span>
+    </div>
+)}
+                                <div>
+                                    <div className="flex items-center" >
+                                        {Array(5).fill('').map((_, index) => (
+                                            <StarIcon key={index} size={18} className='text-transparent mt-0.5' fill={item.rating >= index + 1 ? "#00C950" : "#D1D5DB"} />
+                                        ))}
+                                    </div>
+                                    <p className="text-sm max-w-lg my-4">{item.review}</p>
+                                    <p className="font-medium text-slate-800">{item.user.name}</p>
+                                    <p className="mt-3 font-light">{new Date(item.createdAt).toDateString()}</p>
                                 </div>
-                                <p className="text-sm max-w-lg my-4">{item.review}</p>
-                                <p className="font-medium text-slate-800">{item.user.name}</p>
-                                <p className="mt-3 font-light">{new Date(item.createdAt).toDateString()}</p>
                             </div>
-                        </div>
-                    ))}
+                        ))
+                    ) : (
+                        <p className="text-slate-500">Belum ada ulasan untuk produk ini.</p>
+                    )}
                 </div>
             )}
 
@@ -50,8 +62,8 @@ const ProductDescription = ({ product }) => {
             <div className="flex gap-3 mt-14">
                 <Image src={product.store.logo} alt="" className="size-11 rounded-full ring ring-slate-400" width={100} height={100} />
                 <div>
-                    <p className="font-medium text-slate-600">Product by {product.store.name}</p>
-                    <Link href={`/shop/${product.store.username}`} className="flex items-center gap-1.5 text-green-500"> view store <ArrowRight size={14} /></Link>
+                    <p className="font-medium text-slate-600">Produk Dibuat Oleh {product.store.name}</p>
+                    <Link href={`/shop/${product.store.username}`} className="flex items-center gap-1.5 text-amber-700"> Lihat Cafe <ArrowRight size={14} /></Link>
                 </div>
             </div>
         </div>

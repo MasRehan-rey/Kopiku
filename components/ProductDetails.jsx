@@ -11,7 +11,11 @@ import { useDispatch, useSelector } from "react-redux";
 const ProductDetails = ({ product }) => {
 
     const productId = product.id;
-    const currency = process.env.NEXT_PUBLIC_CURRENCY_SYMBOL || '$';
+    const currency = process.env.NEXT_PUBLIC_CURRENCY_SYMBOL || 'Rp';
+
+    const formatCurrency = (amount) => {
+        return `${currency}${amount.toLocaleString('id-ID')}`
+    }
 
     const cart = useSelector(state => state.cart.cartItems);
     const dispatch = useDispatch();
@@ -49,31 +53,31 @@ const ProductDetails = ({ product }) => {
                     <p className="text-sm ml-3 text-slate-500">{product.rating.length} Reviews</p>
                 </div>
                 <div className="flex items-start my-6 gap-3 text-2xl font-semibold text-slate-800">
-                    <p> {currency}{product.price} </p>
-                    <p className="text-xl text-slate-500 line-through">{currency}{product.mrp}</p>
+                    <p> {formatCurrency(product.price)} </p>
+                    <p className="text-xl text-slate-500 line-through">{formatCurrency(product.mrp)}</p>
                 </div>
                 <div className="flex items-center gap-2 text-slate-500">
                     <TagIcon size={14} />
-                    <p>Save {((product.mrp - product.price) / product.mrp * 100).toFixed(0)}% right now</p>
+                    <p>Dapatkan {((product.mrp - product.price) / product.mrp * 100).toFixed(0)}% Sekarang</p>
                 </div>
                 <div className="flex items-end gap-5 mt-10">
                     {
                         cart[productId] && (
                             <div className="flex flex-col gap-3">
-                                <p className="text-lg text-slate-800 font-semibold">Quantity</p>
+                                <p className="text-lg text-slate-800 font-semibold">Jumlah</p>
                                 <Counter productId={productId} />
                             </div>
                         )
                     }
                     <button onClick={() => !cart[productId] ? addToCartHandler() : router.push('/cart')} className="bg-slate-800 text-white px-10 py-3 text-sm font-medium rounded hover:bg-slate-900 active:scale-95 transition">
-                        {!cart[productId] ? 'Add to Cart' : 'View Cart'}
+                        {!cart[productId] ? 'Tambah Ke Keranjang' : 'Lihat Keranjang'}
                     </button>
                 </div>
                 <hr className="border-gray-300 my-5" />
                 <div className="flex flex-col gap-4 text-slate-500">
-                    <p className="flex gap-3"> <EarthIcon className="text-slate-400" /> Free shipping worldwide </p>
-                    <p className="flex gap-3"> <CreditCardIcon className="text-slate-400" /> 100% Secured Payment </p>
-                    <p className="flex gap-3"> <UserIcon className="text-slate-400" /> Trusted by top brands </p>
+                    <p className="flex gap-3"> <EarthIcon className="text-slate-400" /> Gratis pengiriman seluruh dunia </p>
+                    <p className="flex gap-3"> <CreditCardIcon className="text-slate-400" /> Pembayaran 100% Aman </p>
+                    <p className="flex gap-3"> <UserIcon className="text-slate-400" /> Dipercaya oleh merek top </p>
                 </div>
 
             </div>

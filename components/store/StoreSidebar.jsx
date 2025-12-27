@@ -9,10 +9,10 @@ const StoreSidebar = ({storeInfo}) => {
     const pathname = usePathname()
 
     const sidebarLinks = [
-        { name: 'Dashboard', href: '/store', icon: HomeIcon },
-        { name: 'Add Product', href: '/store/add-product', icon: SquarePlusIcon },
-        { name: 'Manage Product', href: '/store/manage-product', icon: SquarePenIcon },
-        { name: 'Orders', href: '/store/orders', icon: LayoutListIcon },
+        { name: 'Beranda', href: '/store', icon: HomeIcon },
+        { name: 'Tambah Produk', href: '/store/add-product', icon: SquarePlusIcon },
+        { name: 'Kelola Produk', href: '/store/manage-product', icon: SquarePenIcon },
+        { name: 'Pesanan', href: '/store/orders', icon: LayoutListIcon },
     ]
 
     return (

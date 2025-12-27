@@ -9,6 +9,9 @@ const LatestProducts = () => {
     const displayQuantity = 4
     const products = useSelector(state => state.product.list)
 
+    console.log("LatestProducts - Products from Redux:", products)
+    console.log("LatestProducts - Products count:", products.length)
+
     return (
         <div className='px-6 my-30 max-w-6xl mx-auto'>
             <Title title='Latest Products' description={`Showing ${products.length < displayQuantity ? products.length : displayQuantity} of ${products.length} products`} href='/shop' />

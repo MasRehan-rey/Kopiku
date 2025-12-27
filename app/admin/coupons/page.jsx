@@ -66,7 +66,7 @@ export default function AdminCoupons() {
             const confirm = window.confirm("Apa kamu yakin ingin menghapus kupon ini ?")
             if(!confirm) return;
             const token = await getToken()
-            await axios.delete('/api/admin/coupon?code=${code}', {
+            await axios.delete(`/api/admin/coupon?code=${code}`, {
                 headers: { Authorization: `Bearer ${token}` }
             })  
             await fetchCoupons()
@@ -88,22 +88,22 @@ export default function AdminCoupons() {
 
             {/* Add Coupon */}
             <form onSubmit={(e) => toast.promise(handleAddCoupon(e), { loading: "Adding coupon..." })} className="max-w-sm text-sm">
-                <h2 className="text-2xl">Add <span className="text-slate-800 font-medium">Coupons</span></h2>
+                <h2 className="text-2xl">Tambah <span className="text-slate-800 font-medium">Kupon</span></h2>
                 <div className="flex gap-2 max-sm:flex-col mt-2">
-                    <input type="text" placeholder="Coupon Code" className="w-full mt-2 p-2 border border-slate-200 outline-slate-400 rounded-md"
+                    <input type="text" placeholder="Kode Kupon" className="w-full mt-2 p-2 border border-slate-200 outline-slate-400 rounded-md"
                         name="code" value={newCoupon.code} onChange={handleChange} required
                     />
-                    <input type="number" placeholder="Coupon Discount (%)" min={1} max={100} className="w-full mt-2 p-2 border border-slate-200 outline-slate-400 rounded-md"
+                    <input type="number" placeholder="Diskon Kupon (%)" min={1} max={100} className="w-full mt-2 p-2 border border-slate-200 outline-slate-400 rounded-md"
                         name="discount" value={newCoupon.discount} onChange={handleChange} required
                     />
                 </div>
-                <input type="text" placeholder="Coupon Description" className="w-full mt-2 p-2 border border-slate-200 outline-slate-400 rounded-md"
+                <input type="text" placeholder="Deskripsi Kupon" className="w-full mt-2 p-2 border border-slate-200 outline-slate-400 rounded-md"
                     name="description" value={newCoupon.description} onChange={handleChange} required
                 />
 
                 <label>
-                    <p className="mt-3">Coupon Expiry Date</p>
-                    <input type="date" placeholder="Coupon Expires At" className="w-full mt-1 p-2 border border-slate-200 outline-slate-400 rounded-md"
+                    <p className="mt-3">Kupon Kadaluwarsa</p>
+                    <input type="date" placeholder="Kupon Kadaluwarsa pada" className="w-full mt-1 p-2 border border-slate-200 outline-slate-400 rounded-md"
                         name="expiresAt" value={format(newCoupon.expiresAt, 'yyyy-MM-dd')} onChange={handleChange}
                     />
                 </label>
@@ -118,7 +118,7 @@ export default function AdminCoupons() {
                             <div className="w-11 h-6 bg-slate-300 rounded-full peer peer-checked:bg-green-600 transition-colors duration-200"></div>
                             <span className="dot absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-200 ease-in-out peer-checked:translate-x-5"></span>
                         </label>
-                        <p>For New User</p>
+                        <p>Untuk Pengguna Baru</p>
                     </div>
                     <div className="flex gap-2 mt-3">
                         <label className="relative inline-flex items-center cursor-pointer text-gray-900 gap-3">
@@ -129,25 +129,25 @@ export default function AdminCoupons() {
                             <div className="w-11 h-6 bg-slate-300 rounded-full peer peer-checked:bg-green-600 transition-colors duration-200"></div>
                             <span className="dot absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-200 ease-in-out peer-checked:translate-x-5"></span>
                         </label>
-                        <p>For Member</p>
+                        <p>Untuk Member</p>
                     </div>
                 </div>
-                <button className="mt-4 p-2 px-10 rounded bg-slate-700 text-white active:scale-95 transition">Add Coupon</button>
+                <button className="mt-4 p-2 px-10 rounded bg-slate-700 text-white active:scale-95 transition">Tambah Kupon</button>
             </form>
 
             {/* List Coupons */}
             <div className="mt-14">
-                <h2 className="text-2xl">List <span className="text-slate-800 font-medium">Coupons</span></h2>
+                <h2 className="text-2xl">List <span className="text-slate-800 font-medium">Kupon</span></h2>
                 <div className="overflow-x-auto mt-4 rounded-lg border border-slate-200 max-w-4xl">
                     <table className="min-w-full bg-white text-sm">
                         <thead className="bg-slate-50">
                             <tr>
-                                <th className="py-3 px-4 text-left font-semibold text-slate-600">Code</th>
-                                <th className="py-3 px-4 text-left font-semibold text-slate-600">Description</th>
-                                <th className="py-3 px-4 text-left font-semibold text-slate-600">Discount</th>
-                                <th className="py-3 px-4 text-left font-semibold text-slate-600">Expires At</th>
-                                <th className="py-3 px-4 text-left font-semibold text-slate-600">New User</th>
-                                <th className="py-3 px-4 text-left font-semibold text-slate-600">For Member</th>
+                                <th className="py-3 px-4 text-left font-semibold text-slate-600">Kode</th>
+                                <th className="py-3 px-4 text-left font-semibold text-slate-600">Deskripsi</th>
+                                <th className="py-3 px-4 text-left font-semibold text-slate-600">Diskon</th>
+                                <th className="py-3 px-4 text-left font-semibold text-slate-600">Berakhir Pada</th>
+                                <th className="py-3 px-4 text-left font-semibold text-slate-600">Pengguna Baru</th>
+                                <th className="py-3 px-4 text-left font-semibold text-slate-600">Untuk Member</th>
                                 <th className="py-3 px-4 text-left font-semibold text-slate-600">Action</th>
                             </tr>
                         </thead>

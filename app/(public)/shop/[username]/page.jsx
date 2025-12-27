@@ -1,11 +1,12 @@
 'use client'
 import ProductCard from "@/components/ProductCard"
 import { useParams } from "next/navigation"
-import { useEffect, useState } from "react"
-import { MailIcon, MapPinIcon } from "lucide-react"
+import { useState, useEffect } from "react"
 import Loading from "@/components/Loading"
 import Image from "next/image"
-import { dummyStoreData, productDummyData } from "@/assets/assets"
+import toast from "react-hot-toast"
+import axios from "axios"
+import { MailIcon, MapPinIcon } from "lucide-react"
 
 export default function StoreShop() {
 
@@ -14,10 +15,27 @@ export default function StoreShop() {
     const [storeInfo, setStoreInfo] = useState(null)
     const [loading, setLoading] = useState(true)
 
+    const currency = process.env.NEXT_PUBLIC_CURRENCY_SYMBOL || 'Rp'
+
+    const formatCurrency = (amount) => {
+        return `${currency}${amount.toLocaleString('id-ID')}`
+    }
+
     const fetchStoreData = async () => {
-        setStoreInfo(dummyStoreData)
-        setProducts(productDummyData)
+        try {
+            console.log("Client: Fetching store data for username:", username);
+            const { data } = await axios.get(`/api/store/data?username=${username}`)
+            console.log("Client: Store data received:", data);
+            setStoreInfo(data.store)
+            setProducts(data.store.Product || [])
+        } catch (error) {
+            console.error("Client: Store data error:", error);
+            console.error("Client: Error response:", error.response);
+            console.error("Client: Error message:", error.message);
+            toast.error(error?.response?.data?.error || error?.response?.data?.message || error.message || "Gagal Mengambil Data")
+        }
         setLoading(false)
+        
     }
 
     useEffect(() => {

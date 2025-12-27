@@ -12,6 +12,9 @@ const OrderItem = ({ order }) => {
     const [ratingModal, setRatingModal] = useState(null);
 
     const { ratings } = useSelector(state => state.rating);
+    
+    console.log("OrderItem - Order ID:", order.id);
+    console.log("OrderItem - All ratings:", ratings);
 
     return (
         <>
@@ -34,9 +37,16 @@ const OrderItem = ({ order }) => {
                                     <p>{currency}{item.price} Qty : {item.quantity} </p>
                                     <p className="mb-1">{new Date(order.createdAt).toDateString()}</p>
                                     <div>
-                                        {ratings.find(rating => order.id === rating.orderId && item.product.id === rating.productId)
-                                            ? <Rating value={ratings.find(rating => order.id === rating.orderId && item.product.id === rating.productId).rating} />
-                                            : <button onClick={() => setRatingModal({ orderId: order.id, productId: item.product.id })} className={`text-green-500 hover:bg-green-50 transition ${order.status !== "DELIVERED" && 'hidden'}`}>Rate Product</button>
+                                        {
+                                            (() => {
+                                                const existingRating = ratings.find(rating => order.id === rating.orderId && item.product.id === rating.productId);
+                                                console.log("OrderItem - Checking rating for:", { orderId: order.id, productId: item.product.id });
+                                                console.log("OrderItem - Found rating:", existingRating);
+                                                
+                                                return existingRating 
+                                                    ? <Rating value={existingRating.rating} />
+                                                    : <button onClick={() => setRatingModal({ orderId: order.id, productId: item.product.id })} className={`text-amber-700 hover:bg-amber-50 transition ${order.status !== "DELIVERED" && 'hidden'}`}>Beri Rating</button>
+                                            })()
                                         }</div>
                                     {ratingModal && <RatingModal ratingModal={ratingModal} setRatingModal={setRatingModal} />}
                                 </div>

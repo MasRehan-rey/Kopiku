@@ -7,19 +7,28 @@ import { NextResponse } from "next/server";
 export async function GET(request) {
     try {
         const { userId } = getAuth(request)
-        const isSeller = await authSeller(userId)
-
-        if(!isSeller){
+        
+        if (!userId) {
             return NextResponse.json({ error: 'not authorized' },{
                 status: 401
             });
         }
 
-        const storeInfo = await prisma.store.findUnique({where: {userId}})
-        return NextResponse.json({isSeller, storeInfo})
+        const storeInfo = await prisma.store.findUnique({
+            where: { userId },
+            include: { user: true }
+        })
+
+        console.log("API: Store info found:", storeInfo)
+        console.log("API: Store status:", storeInfo?.status)
+
+        const isSeller = storeInfo && storeInfo.status === 'approved' ? true : false
+        console.log("API: Is seller result:", isSeller)
+
+        return NextResponse.json({ isSeller, storeInfo })
 
     } catch (error) {
-        console.error(error);
+        console.error("API Error:", error);
             return NextResponse.json({error: error.code || error.message}, {
                 status: 400
             })

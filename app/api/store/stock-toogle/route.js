@@ -1,12 +1,12 @@
 import authSeller from "@/middlewares/authSeller";
-import { getAuth } from "@clerk/nextjs/server";
+import { getAuth } from "@clerk/nextjs/dist/types/server";
 import { NextResponse } from "next/server";
-import prisma from "@/lib/prisma";
+
 
 // toogle stock of product
 export async function POST(request){
     try {
-        const { userId } = getAuth(request)
+        const { iserId } = getAuth(request)
         const { productId } = await request.json()
 
         if(!productId){
@@ -33,8 +33,8 @@ export async function POST(request){
             })
         }
         
-        await prisma.product.update({
-            where: { id: productId},
+        await prisma,product.update({
+            whare: { id: productId},
             data: {inStock: !product.inStock}
         })
 

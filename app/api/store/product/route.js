@@ -2,6 +2,7 @@ import imageKit from "@/configs/imageKit"
 import authSeller from "@/middlewares/authSeller"
 import { getAuth } from "@clerk/nextjs/server"
 import { NextResponse } from "next/server"
+import prisma from "@/lib/prisma"
 
 // add new product
 export async function POST(request){
@@ -57,7 +58,7 @@ export async function POST(request){
             }
         })
 
-        return NextResponse.json({message: "Product added succesfully"})
+        return NextResponse.json({message: "Produk Berhasil ditambahkan"})
         
     } catch (error) {
       console.error(error);
@@ -77,12 +78,15 @@ export async function GET (request){
             return NextResponse.json({error: 'not authorized'}, {status: 401})
         }
 
-        const product = await prisma.product.findMany({
+        const products = await prisma.product.findMany({
             where: {storeId}
         })
+
+        return NextResponse.json({products})
+        
     } catch (error) {
          console.error(error);
         return NextResponse.json({error: error.code || error.message},
-        {status: 400})
+        {status: 500})
     }
 }

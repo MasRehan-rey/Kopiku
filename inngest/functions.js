@@ -1,5 +1,8 @@
 import { inngest } from "./client";
+import { PrismaClient } from '@prisma/client';
 import prisma from "@/lib/prisma";
+
+const prisma = new PrismaClient();
 
 //inngest function to save  user data  to a database
 

@@ -5,8 +5,13 @@ import { CircleDollarSignIcon, ShoppingBasketIcon, StarIcon, TagsIcon } from "lu
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
+import { useAuth } from "@clerk/nextjs"
+import toast from "react-hot-toast"
+import axios from "axios"
 
 export default function Dashboard() {
+
+    const { getToken } = useAuth()
 
     const currency = process.env.NEXT_PUBLIC_CURRENCY_SYMBOL || '$'
 
@@ -21,14 +26,24 @@ export default function Dashboard() {
     })
 
     const dashboardCardsData = [
-        { title: 'Total Products', value: dashboardData.totalProducts, icon: ShoppingBasketIcon },
-        { title: 'Total Earnings', value: currency + dashboardData.totalEarnings, icon: CircleDollarSignIcon },
-        { title: 'Total Orders', value: dashboardData.totalOrders, icon: TagsIcon },
-        { title: 'Total Ratings', value: dashboardData.ratings.length, icon: StarIcon },
+        { title: 'Total Produk', value: dashboardData.totalProducts, icon: ShoppingBasketIcon },
+        { title: 'Total Pendapatan', value: currency + dashboardData.totalEarnings, icon: CircleDollarSignIcon },
+        { title: 'Total Pesanan', value: dashboardData.totalOrders, icon: TagsIcon },
+        { title: 'Total Rating', value: dashboardData.ratings.length, icon: StarIcon },
     ]
 
     const fetchDashboardData = async () => {
-        setDashboardData(dummyStoreDashboardData)
+       try {
+        const token = await getToken()
+        const { data } = await axios.get('/api/store/dashboard', {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+        setDashboardData(data.dashboardData)
+       } catch (error) {
+        toast.error(error?.response?.data?.error || error.message)
+       } 
         setLoading(false)
     }
 
@@ -40,7 +55,7 @@ export default function Dashboard() {
 
     return (
         <div className=" text-slate-500 mb-28">
-            <h1 className="text-2xl">Seller <span className="text-slate-800 font-medium">Dashboard</span></h1>
+            <h1 className="text-2xl">Dashboard <span className="text-slate-800 font-medium">Toko</span></h1>
 
             <div className="flex flex-wrap gap-5 my-10 mt-4">
                 {
@@ -56,7 +71,7 @@ export default function Dashboard() {
                 }
             </div>
 
-            <h2>Total Reviews</h2>
+            <h2>Total Reviewer</h2>
 
             <div className="mt-5">
                 {
@@ -64,7 +79,15 @@ export default function Dashboard() {
                         <div key={index} className="flex max-sm:flex-col gap-5 sm:items-center justify-between py-6 border-b border-slate-200 text-sm text-slate-600 max-w-4xl">
                             <div>
                                 <div className="flex gap-3">
-                                    <Image src={review.user.image} alt="" className="w-10 aspect-square rounded-full" width={100} height={100} />
+                                    {review.user.image ? (
+    <Image src={review.user.image} alt={review.user.name} className="w-10 aspect-square rounded-full" width={100} height={100} />
+) : (
+    <div className="w-10 aspect-square rounded-full bg-gray-200 flex items-center justify-center">
+        <span className="text-gray-500 text-xs font-medium">
+            {review.user.name ? review.user.name.charAt(0).toUpperCase() : 'U'}
+        </span>
+    </div>
+)}
                                     <div>
                                         <p className="font-medium">{review.user.name}</p>
                                         <p className="font-light text-slate-500">{new Date(review.createdAt).toDateString()}</p>
@@ -82,7 +105,7 @@ export default function Dashboard() {
                                         ))}
                                     </div>
                                 </div>
-                                <button onClick={() => router.push(`/product/${review.product.id}`)} className="bg-slate-100 px-5 py-2 hover:bg-slate-200 rounded transition-all">View Product</button>
+                                <button onClick={() => router.push(`/product/${review.product.id}`)} className="bg-slate-100 px-5 py-2 hover:bg-slate-200 rounded transition-all">Lihat Produk</button>
                             </div>
                         </div>
                     ))

@@ -9,11 +9,11 @@ export async function GET(request){
         const { userId } = getAuth(request)
         const storeId = await authSeller(userId)
 
-        //get all ordersfor seller
+        //get all orders for seller
         const orders = await prisma.order.findMany({where: {storeId}})
         
-        //get allproducts with  ratinngs for seller
-        const product = await prisma.product.findMany({where: {storeId}})
+        //get all products with ratings for seller
+        const products = await prisma.product.findMany({where: {storeId}})
 
         const ratings = await prisma.rating.findMany({
             where: {productId: {in: products.map(product => product.id)}},
@@ -23,7 +23,7 @@ export async function GET(request){
         const dashboardData = {
             ratings,
             totalOrders: orders.length,
-            totalEarnnings: Math.round(orders.reduce((acc, order)=> acc + order. total, 0)),
+            totalEarnings: Math.round(orders.reduce((acc, order)=> acc + order.total, 0)),
             totalProducts: products.length
         }
 
