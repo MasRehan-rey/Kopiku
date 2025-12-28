@@ -1,4 +1,7 @@
+import croissant from "./Croissant.png"
+import americano from "./Americano.png"
 import gs_logo from "./gs_logo.jpg"
+import iced_latte from "./Iced Latte.png"
 import kopikita1 from "./Kopikita1.png"
 import happy_store from "./happy_store.webp"
 import upload_area from "./upload_area.svg"
@@ -27,6 +30,7 @@ export const assets = {
     hero_product_img1, hero_product_img2, gs_logo, kopikita1,
     product_img1, product_img2, product_img3, product_img4, product_img5, product_img6,
     product_img7, product_img8, product_img9, product_img10, product_img11, product_img12,
+    iced_latte, americano, croissant,
 }
 
 export const categories = ["Headphones", "Speakers", "Watch", "Earbuds", "Mouse", "Decoration"];

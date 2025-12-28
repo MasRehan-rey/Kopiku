@@ -15,12 +15,6 @@ export default function StoreShop() {
     const [storeInfo, setStoreInfo] = useState(null)
     const [loading, setLoading] = useState(true)
 
-    const currency = process.env.NEXT_PUBLIC_CURRENCY_SYMBOL || 'Rp'
-
-    const formatCurrency = (amount) => {
-        return `${currency}${amount.toLocaleString('id-ID')}`
-    }
-
     const fetchStoreData = async () => {
         try {
             console.log("Client: Fetching store data for username:", username);
