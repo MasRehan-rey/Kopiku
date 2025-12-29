@@ -1,85 +1,117 @@
 <div align="center">
-  <h1><img src="https://gocartshop.in/favicon.ico" width="20" height="20" alt="GoCart Favicon">
-   GoCart</h1>
-  <p>
-    An open-source multi-vendor e-commerce platform built with Next.js and Tailwind CSS.
-  </p>
-  <p>
-    <a href="https://github.com/GreatStackDev/goCart/blob/main/LICENSE.md"><img src="https://img.shields.io/github/license/GreatStackDev/goCart?style=for-the-badge" alt="License"></a>
-    <a href="https://github.com/GreatStackDev/goCart/pulls"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=for-the-badge" alt="PRs Welcome"></a>
-    <a href="https://github.com/GreatStackDev/goCart/issues"><img src="https://img.shields.io/github/issues/GreatStackDev/goCart?style=for-the-badge" alt="GitHub issues"></a>
-  </p>
+  <h1>Kopikita</h1>
+  <p>Multi-vendor e-commerce platform built with Next.js (App Router), Prisma, Neon Postgres, Clerk, and Tailwind CSS.</p>
 </div>
-
----
-
-## 📖 Table of Contents
-
-- [✨ Features](#-features)
-- [🛠️ Tech Stack](#-tech-stack)
-- [🚀 Getting Started](#-getting-started)
-- [🤝 Contributing](#-contributing)
-- [📜 License](#-license)
 
 ---
 
 ## Features
 
-- **Multi-Vendor Architecture:** Allows multiple vendors to register, manage their own products, and sell on a single platform.
-- **Customer-Facing Storefront:** A beautiful and responsive user interface for customers to browse and purchase products.
-- **Vendor Dashboards:** Dedicated dashboards for vendors to manage products, view sales analytics, and track orders.
-- **Admin Panel:** A comprehensive dashboard for platform administrators to oversee vendors, products, and commissions.
+- **Storefront**: browse products by category, add to cart, checkout.
+- **Multi-vendor**: sellers can manage their products and orders.
+- **Admin panel**: manage stores, products, and platform data.
+- **Auth**: Clerk authentication.
+- **Database**: Prisma + Neon Postgres.
+- **Payments**: Stripe (optional; depends on env variables).
+- **Media**: ImageKit integration (optional; depends on env variables).
 
-## 🛠️ Tech Stack <a name="-tech-stack"></a>
+---
 
-- **Framework:** Next.js
-- **Styling:** Tailwind CSS
-- **UI Components:** Lucide React for icons
-- **State Management:** Redux Toolkit
+## Tech Stack
 
-## 🚀 Getting Started <a name="-getting-started"></a>
+- **Next.js**: 16.x (Turbopack in development)
+- **React**: 19
+- **Tailwind CSS**: v4
+- **Prisma**: 6.x
+- **Database**: Neon Postgres
+- **Auth**: Clerk
+- **Payments**: Stripe
+- **Uploads/Images**: ImageKit
 
-First, install the dependencies. We recommend using `npm` for this project.
+---
+
+## Getting Started
+
+### 1) Install dependencies
 
 ```bash
 npm install
 ```
 
-Then, run the development server:
+### 2) Configure environment variables
+
+Create `.env.local` in the project root.
+
+Required:
+
+- `DATABASE_URL`
+- `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`
+- `CLERK_SECRET_KEY`
+
+Optional (only if you use these features):
+
+- `STRIPE_SECRET_KEY`
+- `STRIPE_WEBHOOK_SECRET`
+- `IMAGE_PUBLIC_KEY`
+- `IMAGE_PRIVATE_KEY`
+- `IMAGE_URL_ENDPOINT`
+- `ADMIN_EMAIL` (comma-separated list)
+- `NEXT_PUBLIC_CURRENCY_SYMBOL` (example: `Rp`)
+
+### 3) Prisma
+
+This project runs `prisma generate` automatically on install/build, but you can also run it manually:
+
+```bash
+npx prisma generate
+```
+
+If you have migrations in your setup, run:
+
+```bash
+npx prisma migrate dev
+```
+
+### 4) Run dev server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open:
 
-You can start editing the page by modifying `app/(public)/page.js`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Outfit](https://vercel.com/font), a new font family for Vercel.
+- `http://localhost:3000`
 
 ---
 
-## 🤝 Contributing <a name="-contributing"></a>
+## Scripts
 
-We welcome contributions! Please see our [CONTRIBUTING.md](./CONTRIBUTING.md) for more details on how to get started.
+- **dev**: `npm run dev`
+- **build**: `npm run build`
+- **start**: `npm run start`
+- **lint**: `npm run lint`
 
 ---
 
-## 📜 License <a name="-license"></a>
+## Troubleshooting
 
-This project is licensed under the MIT License. See the [LICENSE.md](./LICENSE.md) file for details.
+### Prisma error P1001 (Can't reach database server)
 
-## Learn More
+If you see `P1001`, it usually means:
 
-To learn more about Next.js, take a look at the following resources:
+- `DATABASE_URL` is wrong, or
+- the database is not reachable from your network.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+For Neon, ensure your `DATABASE_URL` is correct and that your Neon project is running.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
+
+## Contributing
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md).
+
+---
+
+## License
+
+MIT License. See [LICENSE.md](./LICENSE.md).
