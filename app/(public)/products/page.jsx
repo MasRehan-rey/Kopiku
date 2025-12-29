@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import ProductCard from '@/components/ProductCard'
 import Loading from '@/components/Loading'
@@ -7,7 +7,7 @@ import toast from 'react-hot-toast'
 import axios from 'axios'
 import { useAuth } from '@clerk/nextjs'
 
-const Products = () => {
+const ProductsContent = () => {
     const { getToken } = useAuth()
     const searchParams = useSearchParams()
     const category = searchParams.get('category') || ''
@@ -62,4 +62,10 @@ const Products = () => {
     )
 }
 
-export default Products
+export default function Products() {
+    return (
+        <Suspense fallback={<Loading />}>
+            <ProductsContent />
+        </Suspense>
+    )
+}
