@@ -8,7 +8,7 @@ console.log("API Cart route loaded")
 export async function GET(request) {
     console.log("CART GET: Called!")
     try {
-        const { userId } = getAuth(request)
+        const { userId } = await getAuth(request)
         console.log("CART GET - User ID:", userId)
         
         if (!userId) {
@@ -24,7 +24,7 @@ export async function GET(request) {
         return NextResponse.json({ cart: user?.cart || {} })
     } catch (error) {
         console.error("CART GET Error:", error)
-        return NextResponse.json({ cart: {} })
+        return NextResponse.json({ error: error.message }, { status: 500 })
     }
 }
 
@@ -32,7 +32,7 @@ export async function POST(request) {
     console.log("CART POST: Called!")
     
     try {
-        const { userId } = getAuth(request)
+        const { userId } = await getAuth(request)
         console.log("CART POST - User ID:", userId)
         
         if (!userId) {

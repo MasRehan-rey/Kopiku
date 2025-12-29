@@ -49,7 +49,7 @@ export async function POST(request){
 //get all rating for user
 export async function GET(request){
     try {
-        const {userId} = getAuth(request)
+        const {userId} = await getAuth(request)
         if(!userId){
             return NextResponse.json({
                 error: "Unauthorized"

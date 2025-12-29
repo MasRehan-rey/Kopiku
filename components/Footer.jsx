@@ -14,10 +14,12 @@ const Footer = () => {
         {
             title: "PRODUK",
             links: [
-                { text: "Earphones", path: '/', icon: null },
-                { text: "Headphones", path: '/', icon: null },
-                { text: "Smartphones", path: '/', icon: null },
-                { text: "Laptops", path: '/', icon: null },
+                { text: "Kopi", path: '/products?category=Kopi', icon: null },
+                { text: "Teh", path: '/products?category=Teh', icon: null },
+                { text: "Camilan", path: '/products?category=Camilan', icon: null },
+                { text: "Makanan", path: '/products?category=Makanan', icon: null },
+                { text: "Dessert", path: '/products?category=Dessert', icon: null },
+                { text: "Minuman Lain", path: '/products?category=Minuman Lain', icon: null },
             ]
         },
         {

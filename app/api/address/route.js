@@ -46,6 +46,11 @@ export async function GET(request) {
         return NextResponse.json({addresses})
     } catch (error) {
         console.error(error);
+        if (error?.code === 'P1001') {
+            return NextResponse.json({ error: 'DATABASE_UNREACHABLE' }, {
+                status: 503
+            })
+        }
         return NextResponse.json({ error: error.code || error.message }, {
             status: 400
         }) 
