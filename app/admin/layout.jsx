@@ -2,8 +2,8 @@ import AdminLayout from "@/components/admin/AdminLayout";
 import { SignedIn, SignedOut, SignIn } from "@clerk/nextjs";
 
 export const metadata = {
-    title: "Kopiku. - Admin",
-    description: "Kopiku. - Admin",
+    title: "Kopikita. - Admin",
+    description: "Kopikita. - Admin",
 };
 
 export default function RootAdminLayout({ children }) {

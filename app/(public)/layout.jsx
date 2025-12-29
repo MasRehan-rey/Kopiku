@@ -6,11 +6,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { fetchProducts } from "@/lib/features/product/productSlice";
 import { fetchCart, uploadCart } from "@/lib/features/cart/cartSlice";
-import { Provider } from "react-redux";
-import { makeStore } from "@/lib/store"
 import { useUser,useAuth } from "@clerk/nextjs";
 import { fetchAddress } from "@/lib/features/address/addressSlice";
 import { fetchUserRatings } from "@/lib/features/rating/ratingSlice";
+import axios from "axios";
 
 function PublicLayoutContent({ children }) {
     const dispatch = useDispatch()
@@ -20,8 +19,9 @@ function PublicLayoutContent({ children }) {
     const {cartItems} = useSelector((state)=> state.cart)
 
     useEffect(() => {
+        console.log("Layout: Dispatching fetchProducts...")
         dispatch(fetchProducts({}))
-    }, [])
+    }, [dispatch])
 
      useEffect(() => {
         if(user) {
@@ -75,8 +75,6 @@ function PublicLayoutContent({ children }) {
 
 export default function PublicLayout({ children }) {
     return (
-        <Provider store={makeStore()}>
-            <PublicLayoutContent>{children}</PublicLayoutContent>
-        </Provider>
+        <PublicLayoutContent>{children}</PublicLayoutContent>
     )
 }
